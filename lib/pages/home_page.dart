@@ -28,7 +28,7 @@ class HomePage extends StatelessWidget {
           children: [
             DrawerHeader(
               child: Center(
-                child: Image.asset('lib/images/logo2.png'),
+                child: Image.asset('assets/images/LogoDarkWithName.png'),
               ),
             ),
             ListTile(

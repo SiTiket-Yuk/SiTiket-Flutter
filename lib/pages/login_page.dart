@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_basic/components/my_button.dart';
-import 'package:flutter_basic/components/my_textfield.dart';
+import 'package:flutter_basic/components/action_button.dart';
+import 'package:flutter_basic/components/text_input_field.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class LoginPage extends StatefulWidget {
@@ -16,10 +16,12 @@ class _LoginPageState extends State<LoginPage> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
+  final heroAuthImage = 'assets/images/HeroAuth.svg';
+
   void signUserIn() async {
     showDialog(
       context: context,
-      builder: (context) {
+      builder: (BuildContext context) {
         return const Center(
           child: CircularProgressIndicator(),
         );
@@ -61,15 +63,15 @@ class _LoginPageState extends State<LoginPage> {
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: Text('Kesalahan Saat Login'),
-            content: Text(
-                'Email/password yang Anda masukkan salah. Silakan coba lagi'),
+            title: const Text('Kesalahan Saat Login'),
+            content: const Text(
+                'Email atau password yang Anda masukkan salah. Silakan coba lagi'),
             actions: [
               MaterialButton(
                 onPressed: () {
                   Navigator.pop(context);
                 },
-                child: Text('Kembali'),
+                child: const Text('Kembali'),
               )
             ],
           );
@@ -78,12 +80,13 @@ class _LoginPageState extends State<LoginPage> {
 
   void invalidEmailMessage() {
     showDialog(
-        context: context,
-        builder: (context) {
-          return const AlertDialog(
-            title: Text('Masukkan format email yang sesuai'),
-          );
-        });
+      context: context,
+      builder: (context) {
+        return const AlertDialog(
+          title: Text('Masukkan format email yang sesuai'),
+        );
+      },
+    );
   }
 
   @override
@@ -96,45 +99,54 @@ class _LoginPageState extends State<LoginPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const SizedBox(height: 50),
-                SvgPicture.asset(
-                  'lib/images/illust.svg',
-                  width: 393,
-                  height: 322,
+                SizedBox(
+                  width: double.infinity,
+                  child: Expanded(
+                    flex: 1,
+                    child: FittedBox(
+                      fit: BoxFit.cover,
+                      child: SvgPicture.asset(heroAuthImage),
+                    ),
+                  ),
                 ),
-                const SizedBox(height: 40),
+                const SizedBox(height: 20),
                 const Padding(
                   padding: EdgeInsets.symmetric(horizontal: 45),
                   child: Text(
-                    'Masuk dan jelajahi pengalaman memesan tiket event favoritmu dengan mudah',
+                    'Masuk dan jelajahi pengalaman memesan tiket event favoritmu dengan mudah!',
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: Color(0xFF424242),
                       fontSize: 16,
+                      fontFamily: 'Inter',
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
                 ),
                 const SizedBox(height: 25),
-                MyTextField(
+                TextInputField(
                   controller: emailController,
                   hintText: 'Email',
                   obscureText: false,
                 ),
-                const SizedBox(height: 10),
-                MyTextField(
+                const SizedBox(height: 15),
+                TextInputField(
                   controller: passwordController,
                   hintText: 'Password',
                   obscureText: true,
                 ),
                 const SizedBox(height: 25),
-                MyButton(onTap: signUserIn, text: "Masuk"),
+                ActionButton(onTap: signUserIn, text: "Masuk"),
                 const SizedBox(height: 15),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
                       'Belum punya akun?',
-                      style: TextStyle(color: Colors.grey[700]),
+                      style: TextStyle(
+                        color: Colors.grey[700],
+                        fontFamily: 'Inter',
+                      ),
                     ),
                     const SizedBox(width: 4),
                     GestureDetector(
@@ -142,8 +154,10 @@ class _LoginPageState extends State<LoginPage> {
                       child: const Text(
                         'Daftar',
                         style: TextStyle(
-                            color: Color(0xFF0076B5),
-                            fontWeight: FontWeight.w600),
+                          color: Color(0xFF0076B5),
+                          fontFamily: 'Inter',
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                     ),
                   ],

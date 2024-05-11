@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_basic/components/my_button.dart';
-import 'package:flutter_basic/components/my_textfield.dart';
+import 'package:flutter_basic/components/action_button.dart';
+import 'package:flutter_basic/components/text_input_field.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -17,6 +17,8 @@ class _RegisterPageState extends State<RegisterPage> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
+
+  final heroAuthImage = 'assets/images/HeroAuth.svg';
 
   void signUserUp() async {
     showDialog(
@@ -87,13 +89,17 @@ class _RegisterPageState extends State<RegisterPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const SizedBox(height: 50),
-                SvgPicture.asset(
-                  'lib/images/illust.svg',
-                  width: 393,
-                  height: 322,
+                SizedBox(
+                  width: double.infinity,
+                  child: Expanded(
+                    flex: 1,
+                    child: FittedBox(
+                      fit: BoxFit.cover,
+                      child: SvgPicture.asset(heroAuthImage),
+                    ),
+                  ),
                 ),
-                const SizedBox(height: 40),
+                const SizedBox(height: 20),
                 const Padding(
                   padding: EdgeInsets.symmetric(horizontal: 45),
                   child: Text(
@@ -102,30 +108,35 @@ class _RegisterPageState extends State<RegisterPage> {
                     style: TextStyle(
                       color: Color(0xFF424242),
                       fontSize: 16,
+                      fontFamily: 'Inter',
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
                 ),
                 const SizedBox(height: 25),
-                MyTextField(
+                TextInputField(
                   controller: nameController,
                   hintText: 'Nama Lengkap',
                   obscureText: false,
                 ),
-                const SizedBox(height: 10),
-                MyTextField(
+                const SizedBox(height: 15),
+                TextInputField(
                   controller: emailController,
                   hintText: 'Email',
                   obscureText: false,
                 ),
                 const SizedBox(height: 25),
-                MyButton(onTap: signUserUp, text: "Daftar"),
+                ActionButton(onTap: signUserUp, text: "Daftar"),
                 const SizedBox(height: 15),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
                       'Sudah punya akun?',
-                      style: TextStyle(color: Colors.grey[700]),
+                      style: TextStyle(
+                        color: Colors.grey[700],
+                        fontFamily: 'Inter',
+                      ),
                     ),
                     const SizedBox(width: 4),
                     GestureDetector(
@@ -133,8 +144,10 @@ class _RegisterPageState extends State<RegisterPage> {
                       child: const Text(
                         'Masuk',
                         style: TextStyle(
-                            color: Color(0xFF0076B5),
-                            fontWeight: FontWeight.w600),
+                          color: Color(0xFF0076B5),
+                          fontFamily: 'Inter',
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                     ),
                   ],
