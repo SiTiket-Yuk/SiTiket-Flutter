@@ -6,11 +6,13 @@ class TextInputField extends StatelessWidget {
     required this.controller,
     required this.hintText,
     required this.obscureText,
+    required this.onChanged,
   });
 
   final TextEditingController controller;
   final String hintText;
   final bool obscureText;
+  final void Function(String) onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -19,6 +21,7 @@ class TextInputField extends StatelessWidget {
       child: TextField(
         controller: controller,
         obscureText: obscureText,
+        onChanged: onChanged,
         decoration: InputDecoration(
           enabledBorder: OutlineInputBorder(
             borderSide: BorderSide(color: Colors.grey.shade400),

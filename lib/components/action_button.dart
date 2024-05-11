@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
 
 class ActionButton extends StatelessWidget {
-  const ActionButton({super.key, required this.onTap, required this.text});
+  const ActionButton({
+    super.key,
+    required this.onTap,
+    required this.text,
+    required this.buttonColor,
+  });
 
   final Function()? onTap;
   final String text;
+  final Color buttonColor;
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +20,7 @@ class ActionButton extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 20),
         margin: const EdgeInsets.symmetric(horizontal: 25),
         decoration: BoxDecoration(
-          color: const Color(0xFFB4618D),
+          color: buttonColor,
           borderRadius: BorderRadius.circular(12),
         ),
         child: Center(

@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_basic/components/action_button.dart';
 import 'package:flutter_basic/components/text_input_field.dart';
+import 'package:flutter_basic/pages/password_page.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -19,6 +20,19 @@ class _RegisterPageState extends State<RegisterPage> {
   final confirmPasswordController = TextEditingController();
 
   final heroAuthImage = 'assets/images/HeroAuth.svg';
+
+  bool isNameValid = false;
+  bool isEmailValid = false;
+
+  void validateFields() {
+    final bool nameValid = nameController.text.isNotEmpty;
+    final bool emailValid = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
+        .hasMatch(emailController.text);
+    setState(() {
+      isNameValid = nameValid;
+      isEmailValid = emailValid;
+    });
+  }
 
   void signUserUp() async {
     showDialog(
@@ -79,6 +93,18 @@ class _RegisterPageState extends State<RegisterPage> {
         });
   }
 
+  void navigateToPasswordPage() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => PasswordPage(
+          name: nameController.text,
+          email: emailController.text,
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -89,15 +115,11 @@ class _RegisterPageState extends State<RegisterPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                SizedBox(
-                  width: double.infinity,
-                  child: Expanded(
-                    flex: 1,
-                    child: FittedBox(
-                      fit: BoxFit.cover,
-                      child: SvgPicture.asset(heroAuthImage),
-                    ),
-                  ),
+                const SizedBox(height: 50),
+                SvgPicture.asset(
+                  heroAuthImage,
+                  width: 393,
+                  height: 322,
                 ),
                 const SizedBox(height: 20),
                 const Padding(
@@ -118,15 +140,25 @@ class _RegisterPageState extends State<RegisterPage> {
                   controller: nameController,
                   hintText: 'Nama Lengkap',
                   obscureText: false,
+                  onChanged: (_) => validateFields(),
                 ),
                 const SizedBox(height: 15),
                 TextInputField(
                   controller: emailController,
                   hintText: 'Email',
                   obscureText: false,
+                  onChanged: (_) => validateFields(),
                 ),
                 const SizedBox(height: 25),
-                ActionButton(onTap: signUserUp, text: "Daftar"),
+                ActionButton(
+                  onTap: isNameValid && isEmailValid
+                      ? navigateToPasswordPage
+                      : null,
+                  text: "Selanjutnya",
+                  buttonColor: isNameValid && isEmailValid
+                      ? const Color(0xFFB4618D)
+                      : Colors.grey,
+                ),
                 const SizedBox(height: 15),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,

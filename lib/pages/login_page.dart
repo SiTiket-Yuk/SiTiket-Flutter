@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_basic/components/action_button.dart';
 import 'package:flutter_basic/components/text_input_field.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -17,6 +18,18 @@ class _LoginPageState extends State<LoginPage> {
   final passwordController = TextEditingController();
 
   final heroAuthImage = 'assets/images/HeroAuth.svg';
+  bool isEmailValid = false;
+  bool isPasswordValid = false;
+
+  void validateFields() {
+    final bool emailValid = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
+        .hasMatch(emailController.text);
+    final bool passwordValid = passwordController.text.length >= 8;
+    setState(() {
+      isEmailValid = emailValid;
+      isPasswordValid = passwordValid;
+    });
+  }
 
   void signUserIn() async {
     showDialog(
@@ -60,22 +73,37 @@ class _LoginPageState extends State<LoginPage> {
 
   void wrongPasswordMessage() {
     showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: const Text('Kesalahan Saat Login'),
-            content: const Text(
-                'Email atau password yang Anda masukkan salah. Silakan coba lagi'),
-            actions: [
-              MaterialButton(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text(
+            'Kesalahan Login',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+                fontFamily: 'Inter', fontWeight: FontWeight.w600, fontSize: 16),
+          ),
+          content: const Text('Email/password yang Anda masukkan salah'),
+          actions: [
+            Container(
+              width: double.infinity,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12),
+                color: Color(0xFFB4618D),
+              ),
+              child: MaterialButton(
                 onPressed: () {
                   Navigator.pop(context);
                 },
-                child: const Text('Kembali'),
-              )
-            ],
-          );
-        });
+                child: const Text(
+                  'Kembali',
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
+            )
+          ],
+        );
+      },
+    );
   }
 
   void invalidEmailMessage() {
@@ -99,15 +127,11 @@ class _LoginPageState extends State<LoginPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                SizedBox(
-                  width: double.infinity,
-                  child: Expanded(
-                    flex: 1,
-                    child: FittedBox(
-                      fit: BoxFit.cover,
-                      child: SvgPicture.asset(heroAuthImage),
-                    ),
-                  ),
+                const SizedBox(height: 50),
+                SvgPicture.asset(
+                  heroAuthImage,
+                  width: 393,
+                  height: 322,
                 ),
                 const SizedBox(height: 20),
                 const Padding(
@@ -128,15 +152,23 @@ class _LoginPageState extends State<LoginPage> {
                   controller: emailController,
                   hintText: 'Email',
                   obscureText: false,
+                  onChanged: (_) => validateFields(),
                 ),
                 const SizedBox(height: 15),
                 TextInputField(
                   controller: passwordController,
                   hintText: 'Password',
                   obscureText: true,
+                  onChanged: (_) => validateFields(),
                 ),
                 const SizedBox(height: 25),
-                ActionButton(onTap: signUserIn, text: "Masuk"),
+                ActionButton(
+                  onTap: isEmailValid && isPasswordValid ? signUserIn : null,
+                  text: "Masuk",
+                  buttonColor: isEmailValid && isPasswordValid
+                      ? const Color(0xFFB4618D)
+                      : Color(0xFFACACAC),
+                ),
                 const SizedBox(height: 15),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
