@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_basic/components/my_button.dart';
-import 'package:flutter_basic/components/my_textfield.dart';
+import 'package:flutter_basic/components/action_button.dart';
+import 'package:flutter_basic/components/text_input_field.dart';
 
 class LoginPage extends StatefulWidget {
   final Function()? onTap;
@@ -18,7 +18,7 @@ class _LoginPageState extends State<LoginPage> {
   void signUserIn() async {
     showDialog(
       context: context,
-      builder: (context) {
+      builder: (BuildContext context) {
         return const Center(
           child: CircularProgressIndicator(),
         );
@@ -45,35 +45,37 @@ class _LoginPageState extends State<LoginPage> {
 
   void wrongEmailMessage() {
     showDialog(
-        context: context,
-        builder: (context) {
-          return const AlertDialog(
-            title: Text('Kesalahan Saat Login'),
-            content: Text('Email yang Anda masukkan salah. Silakan coba lagi'),
-          );
-        });
+      context: context,
+      builder: (BuildContext context) {
+        return const AlertDialog(
+          title: Text('Kesalahan Saat Login'),
+          content: Text('Email yang Anda masukkan salah. Silakan coba lagi'),
+        );
+      },
+    );
   }
 
   void wrongPasswordMessage() {
     showDialog(
-        context: context,
-        builder: (context) {
-          return const AlertDialog(
-            title: Text('Kesalahan Saat Login'),
-            content:
-                Text('Password yang Anda masukkan salah. Silakan coba lagi'),
-          );
-        });
+      context: context,
+      builder: (BuildContext context) {
+        return const AlertDialog(
+          title: Text('Kesalahan Saat Login'),
+          content: Text('Password yang Anda masukkan salah. Silakan coba lagi'),
+        );
+      },
+    );
   }
 
   void invalidEmailMessage() {
     showDialog(
-        context: context,
-        builder: (context) {
-          return const AlertDialog(
-            title: Text('Masukkan format email yang sesuai'),
-          );
-        });
+      context: context,
+      builder: (BuildContext context) {
+        return const AlertDialog(
+          title: Text('Masukkan format email yang sesuai'),
+        );
+      },
+    );
   }
 
   @override
@@ -88,7 +90,7 @@ class _LoginPageState extends State<LoginPage> {
               children: [
                 const SizedBox(height: 50),
                 Image.asset(
-                  'lib/images/logo.png',
+                  'assets/images/LogoDark.png',
                   width: 100,
                   height: 100,
                 ),
@@ -105,26 +107,28 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
                 const SizedBox(height: 25),
-                MyTextField(
+                TextInputField(
                   controller: emailController,
                   hintText: 'Masukkan email',
                   obscureText: false,
                 ),
                 const SizedBox(height: 10),
-                MyTextField(
+                TextInputField(
                   controller: passwordController,
                   hintText: 'Masukkan password',
                   obscureText: true,
                 ),
                 const SizedBox(height: 25),
-                MyButton(onTap: signUserIn, text: "Masuk"),
+                ActionButton(onTap: signUserIn, text: "Masuk"),
                 const SizedBox(height: 50),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
                       'Belum punya akun?',
-                      style: TextStyle(color: Colors.grey[700]),
+                      style: TextStyle(
+                        color: Colors.grey[700],
+                      ),
                     ),
                     const SizedBox(width: 4),
                     GestureDetector(
@@ -132,7 +136,9 @@ class _LoginPageState extends State<LoginPage> {
                       child: const Text(
                         'Daftar',
                         style: TextStyle(
-                            color: Colors.blue, fontWeight: FontWeight.bold),
+                          color: Colors.blue,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                   ],

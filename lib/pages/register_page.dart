@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_basic/components/my_button.dart';
-import 'package:flutter_basic/components/my_textfield.dart';
+import 'package:flutter_basic/components/action_button.dart';
+import 'package:flutter_basic/components/text_input_field.dart';
 
 class RegisterPage extends StatefulWidget {
   final Function()? onTap;
@@ -19,7 +19,7 @@ class _RegisterPageState extends State<RegisterPage> {
   void signUserUp() async {
     showDialog(
       context: context,
-      builder: (context) {
+      builder: (BuildContext context) {
         return const Center(
           child: CircularProgressIndicator(),
         );
@@ -47,7 +47,7 @@ class _RegisterPageState extends State<RegisterPage> {
   void weakPasswordMessage() {
     showDialog(
         context: context,
-        builder: (context) {
+        builder: (BuildContext context) {
           return const AlertDialog(
             title: Text('Password minimal 6 karakter'),
           );
@@ -57,7 +57,7 @@ class _RegisterPageState extends State<RegisterPage> {
   void emailInUseMessage() {
     showDialog(
         context: context,
-        builder: (context) {
+        builder: (BuildContext context) {
           return const AlertDialog(
             title: Text('Email sudah terdaftar'),
             content: Text('Silakan ubah email'),
@@ -68,7 +68,7 @@ class _RegisterPageState extends State<RegisterPage> {
   void invalidEmailMessage() {
     showDialog(
         context: context,
-        builder: (context) {
+        builder: (BuildContext context) {
           return const AlertDialog(
             title: Text('Masukkan format email yang sesuai'),
           );
@@ -87,7 +87,7 @@ class _RegisterPageState extends State<RegisterPage> {
               children: [
                 const SizedBox(height: 50),
                 Image.asset(
-                  'lib/images/logo.png',
+                  'assets/images/LogoDark.png',
                   width: 100,
                   height: 100,
                 ),
@@ -104,19 +104,19 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                 ),
                 const SizedBox(height: 25),
-                MyTextField(
+                TextInputField(
                   controller: emailController,
                   hintText: 'Masukkan email',
                   obscureText: false,
                 ),
                 const SizedBox(height: 10),
-                MyTextField(
+                TextInputField(
                   controller: passwordController,
                   hintText: 'Masukkan password',
                   obscureText: true,
                 ),
                 const SizedBox(height: 25),
-                MyButton(onTap: signUserUp, text: "Daftar"),
+                ActionButton(onTap: signUserUp, text: "Daftar"),
                 const SizedBox(height: 50),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -131,7 +131,9 @@ class _RegisterPageState extends State<RegisterPage> {
                       child: const Text(
                         'Masuk',
                         style: TextStyle(
-                            color: Colors.blue, fontWeight: FontWeight.bold),
+                          color: Colors.blue,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                   ],
