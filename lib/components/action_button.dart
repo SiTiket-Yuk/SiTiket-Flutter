@@ -13,8 +13,8 @@ class ActionButton extends StatelessWidget {
         padding: const EdgeInsets.all(25),
         margin: const EdgeInsets.symmetric(horizontal: 25),
         decoration: BoxDecoration(
-          color: Colors.blue,
-          borderRadius: BorderRadius.circular(8),
+          color: Color(0xFFB4618D),
+          borderRadius: BorderRadius.circular(12),
         ),
         child: Center(
           child: Text(
