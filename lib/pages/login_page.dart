@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_basic/components/my_button.dart';
 import 'package:flutter_basic/components/my_textfield.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class LoginPage extends StatefulWidget {
   final Function()? onTap;
@@ -49,7 +50,8 @@ class _LoginPageState extends State<LoginPage> {
         builder: (context) {
           return const AlertDialog(
             title: Text('Kesalahan Saat Login'),
-            content: Text('Email yang Anda masukkan salah. Silakan coba lagi'),
+            content:
+                Text('Email belum terdaftar. Buat akun baru dengan email ini?'),
           );
         });
   }
@@ -58,10 +60,18 @@ class _LoginPageState extends State<LoginPage> {
     showDialog(
         context: context,
         builder: (context) {
-          return const AlertDialog(
+          return AlertDialog(
             title: Text('Kesalahan Saat Login'),
-            content:
-                Text('Password yang Anda masukkan salah. Silakan coba lagi'),
+            content: Text(
+                'Email/password yang Anda masukkan salah. Silakan coba lagi'),
+            actions: [
+              MaterialButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text('Kembali'),
+              )
+            ],
           );
         });
   }
@@ -87,19 +97,19 @@ class _LoginPageState extends State<LoginPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const SizedBox(height: 50),
-                Image.asset(
-                  'lib/images/logo.png',
-                  width: 100,
-                  height: 100,
+                SvgPicture.asset(
+                  'lib/images/illust.svg',
+                  width: 393,
+                  height: 322,
                 ),
-                const SizedBox(height: 50),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 45),
+                const SizedBox(height: 40),
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 45),
                   child: Text(
-                    'Kami senang melihatmu lagi! Masuk dan jelajahi pengalaman memesan tiket event favoritmu dengan mudah',
+                    'Masuk dan jelajahi pengalaman memesan tiket event favoritmu dengan mudah',
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                      color: Colors.grey[700],
+                      color: Color(0xFF424242),
                       fontSize: 16,
                     ),
                   ),
@@ -107,18 +117,18 @@ class _LoginPageState extends State<LoginPage> {
                 const SizedBox(height: 25),
                 MyTextField(
                   controller: emailController,
-                  hintText: 'Masukkan email',
+                  hintText: 'Email',
                   obscureText: false,
                 ),
                 const SizedBox(height: 10),
                 MyTextField(
                   controller: passwordController,
-                  hintText: 'Masukkan password',
+                  hintText: 'Password',
                   obscureText: true,
                 ),
                 const SizedBox(height: 25),
                 MyButton(onTap: signUserIn, text: "Masuk"),
-                const SizedBox(height: 50),
+                const SizedBox(height: 15),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -132,7 +142,8 @@ class _LoginPageState extends State<LoginPage> {
                       child: const Text(
                         'Daftar',
                         style: TextStyle(
-                            color: Colors.blue, fontWeight: FontWeight.bold),
+                            color: Color(0xFF0076B5),
+                            fontWeight: FontWeight.w600),
                       ),
                     ),
                   ],
