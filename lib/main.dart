@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_basic/pages/auth_page.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_basic/pages/splash%20_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'config/firebase_options.dart';
 
@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
         textTheme: GoogleFonts.interTextTheme(Theme.of(context).textTheme),
       ),
       debugShowCheckedModeBanner: false,
-      home: const AuthPage(),
+      home: const SplashScreen(),
     );
   }
 }

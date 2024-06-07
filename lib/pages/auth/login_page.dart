@@ -1,8 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_basic/components/action_button.dart';
 import 'package:flutter_basic/components/text_input_field.dart';
+import 'package:flutter_basic/pages/home/home_page.dart';
+import 'package:flutter_basic/pages/home/navbar.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class LoginPage extends StatefulWidget {
@@ -47,28 +48,80 @@ class _LoginPageState extends State<LoginPage> {
         password: passwordController.text,
       );
       Navigator.pop(context);
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const Navbar()),
+      );
     } on FirebaseAuthException catch (e) {
       Navigator.pop(context);
       if (e.code == 'user-not-found') {
-        wrongEmailMessage();
+        notFoundEmailMessage();
       } else if (e.code == 'wrong-password') {
         wrongPasswordMessage();
-      } else if (e.code == 'invalid-email') {
-        invalidEmailMessage();
       }
     }
   }
 
-  void wrongEmailMessage() {
+  void notFoundEmailMessage() {
     showDialog(
-        context: context,
-        builder: (context) {
-          return const AlertDialog(
-            title: Text('Kesalahan Saat Login'),
-            content:
-                Text('Email belum terdaftar. Buat akun baru dengan email ini?'),
-          );
-        });
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text(
+            'Kesalahan Login',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontFamily: 'Inter',
+              fontWeight: FontWeight.w600,
+              fontSize: 16,
+            ),
+          ),
+          content: const Text(
+              'Email belum terdaftar. Buat akun baru dengan email ini?'),
+          actions: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                  width: 140,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12),
+                    color: Color.fromARGB(255, 255, 255, 255),
+                  ),
+                  child: MaterialButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: const Text(
+                      'Kembali',
+                      style: TextStyle(color: Color(0xFFB4618D)),
+                    ),
+                  ),
+                ),
+                Container(
+                  width: 140,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12),
+                    color: Color(0xFFB4618D),
+                  ),
+                  child: MaterialButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                      widget.onTap?.call();
+                    },
+                    child: const Text(
+                      'Buat Akun',
+                      style:
+                          TextStyle(color: Color.fromARGB(255, 255, 255, 255)),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        );
+      },
+    );
   }
 
   void wrongPasswordMessage() {
@@ -101,17 +154,6 @@ class _LoginPageState extends State<LoginPage> {
               ),
             )
           ],
-        );
-      },
-    );
-  }
-
-  void invalidEmailMessage() {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return const AlertDialog(
-          title: Text('Masukkan format email yang sesuai'),
         );
       },
     );

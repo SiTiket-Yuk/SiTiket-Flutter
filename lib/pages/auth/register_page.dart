@@ -1,8 +1,7 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_basic/components/action_button.dart';
 import 'package:flutter_basic/components/text_input_field.dart';
-import 'package:flutter_basic/pages/password_page.dart';
+import 'package:flutter_basic/pages/auth/password_page.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -16,8 +15,6 @@ class RegisterPage extends StatefulWidget {
 class _RegisterPageState extends State<RegisterPage> {
   final nameController = TextEditingController();
   final emailController = TextEditingController();
-  final passwordController = TextEditingController();
-  final confirmPasswordController = TextEditingController();
 
   final heroAuthImage = 'assets/images/HeroAuth.svg';
 
@@ -34,65 +31,6 @@ class _RegisterPageState extends State<RegisterPage> {
     });
   }
 
-  void signUserUp() async {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return const Center(
-          child: CircularProgressIndicator(),
-        );
-      },
-    );
-
-    try {
-      await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        email: emailController.text,
-        password: passwordController.text,
-      );
-      Navigator.pop(context);
-    } on FirebaseAuthException catch (e) {
-      Navigator.pop(context);
-      if (e.code == 'email-already-in-use') {
-        emailInUseMessage();
-      } else if (e.code == 'weak-password') {
-        weakPasswordMessage();
-      } else if (e.code == 'invalid-email') {
-        invalidEmailMessage();
-      }
-    }
-  }
-
-  void weakPasswordMessage() {
-    showDialog(
-        context: context,
-        builder: (context) {
-          return const AlertDialog(
-            title: Text('Password minimal 6 karakter'),
-          );
-        });
-  }
-
-  void emailInUseMessage() {
-    showDialog(
-        context: context,
-        builder: (context) {
-          return const AlertDialog(
-            title: Text('Email sudah terdaftar'),
-            content: Text('Silakan ubah email'),
-          );
-        });
-  }
-
-  void invalidEmailMessage() {
-    showDialog(
-        context: context,
-        builder: (context) {
-          return const AlertDialog(
-            title: Text('Masukkan format email yang sesuai'),
-          );
-        });
-  }
-
   void navigateToPasswordPage() {
     Navigator.push(
       context,
@@ -100,6 +38,7 @@ class _RegisterPageState extends State<RegisterPage> {
         builder: (context) => PasswordPage(
           name: nameController.text,
           email: emailController.text,
+          onTap: widget.onTap,
         ),
       ),
     );

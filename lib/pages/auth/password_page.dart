@@ -2,12 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_basic/components/action_button.dart';
 import 'package:flutter_basic/components/text_input_field.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_basic/pages/home/home_page.dart';
+import 'package:flutter_basic/pages/auth/login_page.dart';
+import 'package:flutter_basic/pages/home/navbar.dart';
+import 'package:flutter_basic/pages/auth/register_page.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class PasswordPage extends StatefulWidget {
   final String name;
   final String email;
-  PasswordPage({super.key, required this.name, required this.email});
+  final Function()? onTap;
+  PasswordPage(
+      {super.key,
+      required this.name,
+      required this.email,
+      required this.onTap});
 
   @override
   State<PasswordPage> createState() => _PasswordPageState();
@@ -36,7 +45,7 @@ class _PasswordPageState extends State<PasswordPage> {
   void signUserUp(BuildContext context) async {
     showDialog(
       context: context,
-      builder: (context) {
+      builder: (BuildContext context) {
         return const Center(
           child: CircularProgressIndicator(),
         );
@@ -49,21 +58,83 @@ class _PasswordPageState extends State<PasswordPage> {
         password: passwordController.text,
       );
       Navigator.pop(context);
-      // Navigate to the next page after registration is successful
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => Navbar()),
+      );
     } on FirebaseAuthException catch (e) {
       Navigator.pop(context);
-      if (e.code == 'weak-password') {
-        weakPasswordMessage(context);
+      if (e.code == 'email-already-in-use') {
+        EmailAlreadyInUseMessage();
       }
     }
   }
 
-  void weakPasswordMessage(BuildContext context) {
+  void EmailAlreadyInUseMessage() {
     showDialog(
       context: context,
       builder: (context) {
-        return const AlertDialog(
-          title: Text('Password minimal 6 karakter'),
+        return AlertDialog(
+          title: const Text(
+            'Email telah terdaftar',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontFamily: 'Inter',
+              fontWeight: FontWeight.w600,
+              fontSize: 16,
+            ),
+          ),
+          content: const Text('Lanjut masuk dengan email ini?'),
+          actions: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                  width: 140,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12),
+                    color: Color.fromARGB(255, 255, 255, 255),
+                  ),
+                  child: MaterialButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                RegisterPage(onTap: widget.onTap)),
+                      );
+                    },
+                    child: const Text(
+                      'Ubah Email',
+                      style: TextStyle(color: Color(0xFFB4618D)),
+                    ),
+                  ),
+                ),
+                Container(
+                  width: 140,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12),
+                    color: Color(0xFFB4618D),
+                  ),
+                  child: MaterialButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => LoginPage(onTap: widget.onTap),
+                        ),
+                      );
+                    },
+                    child: const Text(
+                      'Masuk',
+                      style:
+                          TextStyle(color: Color.fromARGB(255, 255, 255, 255)),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
         );
       },
     );
@@ -116,18 +187,14 @@ class _PasswordPageState extends State<PasswordPage> {
                 const SizedBox(height: 25),
                 ActionButton(
                   onTap: () {
-                    if (passwordController.text.length >= 8 &&
-                        passwordController.text ==
-                            confirmPasswordController.text) {
+                    if (isPasswordValid && isConfirmPasswordValid) {
                       signUserUp(context);
-                    } else {
-                      // Handle invalid password or password mismatch
-                    }
+                    } else {}
                   },
                   text: "Daftar",
                   buttonColor: isPasswordValid && isConfirmPasswordValid
                       ? const Color(0xFFB4618D)
-                      : Colors.grey, // Change button color conditionally
+                      : Colors.grey,
                 ),
               ],
             ),
