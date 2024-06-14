@@ -4,6 +4,7 @@ import 'package:flutter_basic/pages/home/profile/profile_loggedIn.dart';
 import 'package:flutter_basic/pages/home/profile/profile_loggedInOrNot.dart';
 import 'package:flutter_basic/pages/home/profile/profile_loggedOut.dart';
 import 'package:flutter_basic/pages/home/my_ticket.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Navbar extends StatefulWidget {
   const Navbar({super.key});

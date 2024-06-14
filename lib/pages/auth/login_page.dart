@@ -60,7 +60,7 @@ class _LoginPageState extends State<LoginPage> {
       } else if (e.code == 'wrong-password') {
         wrongPasswordMessage();
       } else {
-        print(e.code);
+        showErrorMessage(e.code);
       }
     }
   }
@@ -157,6 +157,21 @@ class _LoginPageState extends State<LoginPage> {
               ),
             )
           ],
+        );
+      },
+    );
+  }
+
+  void showErrorMessage(String message) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Center(
+            child: Text(
+              message,
+            ),
+          ),
         );
       },
     );
