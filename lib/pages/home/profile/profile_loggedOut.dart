@@ -115,6 +115,7 @@ class _MyProfileState extends State<MyProfile> {
             Divider(
               color: Color(0XFFD4D6DD),
               height: 1,
+              thickness: 0.5,
             ),
             ListTile(
               contentPadding: EdgeInsets.all(20),
@@ -139,6 +140,7 @@ class _MyProfileState extends State<MyProfile> {
             Divider(
               color: Color(0XFFD4D6DD),
               height: 1,
+              thickness: 0.5,
             ),
           ],
         ),

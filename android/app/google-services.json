@@ -1,13 +1,14 @@
 {
   "project_info": {
-    "project_number": "419845901955",
-    "project_id": "sitiket-54dbb",
-    "storage_bucket": "sitiket-54dbb.appspot.com"
+    "project_number": "162436056500",
+    "firebase_url": "https://sitiket-yuk-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "sitiket-yuk",
+    "storage_bucket": "sitiket-yuk.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:419845901955:android:8aef9c2845cbf8e85c55b6",
+        "mobilesdk_app_id": "1:162436056500:android:bb54103ad967608084dee1",
         "android_client_info": {
           "package_name": "com.example.flutter_basic"
         }
@@ -15,7 +16,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyDBtfuzj3n_cyOK46aLuwJDgZzpuDRYeow"
+          "current_key": "AIzaSyCK92r6NJ6OFrpbudlZ__nubqMNIpmoK1U"
         }
       ],
       "services": {

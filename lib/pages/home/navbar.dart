@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_basic/pages/home/home_page.dart';
 import 'package:flutter_basic/pages/home/profile/profile_loggedIn.dart';
+import 'package:flutter_basic/pages/home/profile/profile_loggedInOrNot.dart';
 import 'package:flutter_basic/pages/home/profile/profile_loggedOut.dart';
 import 'package:flutter_basic/pages/home/my_ticket.dart';
 
@@ -20,12 +21,8 @@ class _NavbarState extends State<Navbar> {
     super.initState();
     pages = [
       HomePage(),
-      ProfileLoggedIn(),
-      MyProfile(onTap: () {
-        setState(() {
-          myCurrentIndex = 0;
-        });
-      }),
+      MyTicket(),
+      ProfileLoggedInOrNot(),
     ];
   }
 
@@ -39,11 +36,11 @@ class _NavbarState extends State<Navbar> {
             myCurrentIndex = index;
           });
         },
+        selectedItemColor: Color(0XFF0076B5),
         items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.airplane_ticket), label: "Ticket"),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profile"),
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: ""),
+          BottomNavigationBarItem(icon: Icon(Icons.airplane_ticket), label: ""),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: ""),
         ],
       ),
       body: pages[myCurrentIndex],

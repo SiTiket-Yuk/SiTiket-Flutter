@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_basic/components/action_button.dart';
 import 'package:flutter_basic/components/text_input_field.dart';
+import 'package:flutter_basic/pages/auth/login_page.dart';
 import 'package:flutter_basic/pages/auth/password_page.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -111,7 +112,14 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                     const SizedBox(width: 4),
                     GestureDetector(
-                      onTap: widget.onTap,
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => LoginPage(onTap: () {}),
+                          ),
+                        );
+                      },
                       child: const Text(
                         'Masuk',
                         style: TextStyle(

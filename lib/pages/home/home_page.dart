@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_basic/pages/home/detail_event.dart';
+import 'package:flutter_basic/pages/home/search_page.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:firebase_database/firebase_database.dart';
 
@@ -8,6 +10,27 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final DatabaseReference _databaseReference =
+      FirebaseDatabase.instance.ref('events');
+  List<Map<dynamic, dynamic>> _events = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchEvents();
+  }
+
+  Future<void> _fetchEvents() async {
+    final DataSnapshot snapshot = await _databaseReference.get();
+    final Map<dynamic, dynamic> eventsMap =
+        snapshot.value as Map<dynamic, dynamic>;
+
+    setState(() {
+      _events =
+          eventsMap.values.map((e) => e as Map<dynamic, dynamic>).toList();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,30 +62,41 @@ class _HomePageState extends State<HomePage> {
             Padding(
               padding: const EdgeInsets.only(
                   top: 15.0, left: 50.0, right: 50.0, bottom: 15.0),
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Color(0xffF9F9F9),
-                  borderRadius: BorderRadius.circular(24.0),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.2),
-                      spreadRadius: 1,
-                      blurRadius: 1,
-                      offset: Offset(0, 1),
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => SearchPage(events: _events),
                     ),
-                  ],
-                ),
-                child: TextField(
-                  decoration: InputDecoration(
-                    hintText: 'Cari event',
-                    hintStyle: TextStyle(fontSize: 16),
-                    prefixIcon: Icon(Icons.search),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(25.0),
-                      borderSide: BorderSide.none,
+                  );
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Color(0xffF9F9F9),
+                    borderRadius: BorderRadius.circular(24.0),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.2),
+                        spreadRadius: 1,
+                        blurRadius: 1,
+                        offset: Offset(0, 1),
+                      ),
+                    ],
+                  ),
+                  child: TextField(
+                    enabled: false,
+                    decoration: InputDecoration(
+                      hintText: 'Cari event',
+                      hintStyle: TextStyle(fontSize: 16),
+                      prefixIcon: Icon(Icons.search),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(25.0),
+                        borderSide: BorderSide.none,
+                      ),
+                      filled: true,
+                      fillColor: Colors.transparent,
                     ),
-                    filled: true,
-                    fillColor: Colors.transparent,
                   ),
                 ),
               ),
@@ -86,15 +120,15 @@ class _HomePageState extends State<HomePage> {
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(12.0),
-                child: Image.network(
-                  'https://via.placeholder.com/400x150',
+                child: Image.asset(
+                  'assets/images/event.png',
                   fit: BoxFit.cover,
                 ),
               ),
             ),
             SizedBox(height: 20),
             const Padding(
-              padding: const EdgeInsets.only(
+              padding: EdgeInsets.only(
                   top: 15.0, left: 15.0, right: 200.0, bottom: 15.0),
               child: Text(
                 'Berlangsung Minggu Ini',
@@ -105,6 +139,7 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             const SizedBox(height: 10),
+            ..._events.map((event) => _buildEventCard(event)).toList(),
           ],
         ),
       ),
@@ -129,6 +164,76 @@ class _HomePageState extends State<HomePage> {
         SizedBox(height: 8),
         Text(label, style: TextStyle(fontSize: 12)),
       ],
+    );
+  }
+
+  Widget _buildEventCard(Map<dynamic, dynamic> event) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => EventDetailPage(event: event),
+          ),
+        );
+      },
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+        child: Card(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15.0),
+          ),
+          elevation: 5,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.vertical(top: Radius.circular(15.0)),
+                child: Image.asset(
+                  'assets/images/12000e001.jpg',
+                  height: 150,
+                  width: double.infinity,
+                  fit: BoxFit.cover,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      event['name'] ?? '',
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                        color: Color(0XFF1F2024),
+                      ),
+                    ),
+                    SizedBox(height: 5),
+                    Text(
+                      event['date'],
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400,
+                        color: Color(0XFF71727A),
+                      ),
+                    ),
+                    SizedBox(height: 10),
+                    Text(
+                      'Rp. ${event['price']}',
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400,
+                        color: Color(0XFF494A50),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_basic/components/action_button.dart';
 import 'package:flutter_basic/components/text_input_field.dart';
+import 'package:flutter_basic/pages/auth/register_page.dart';
 import 'package:flutter_basic/pages/home/home_page.dart';
 import 'package:flutter_basic/pages/home/navbar.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -58,6 +59,8 @@ class _LoginPageState extends State<LoginPage> {
         notFoundEmailMessage();
       } else if (e.code == 'wrong-password') {
         wrongPasswordMessage();
+      } else {
+        print(e.code);
       }
     }
   }
@@ -224,7 +227,14 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     const SizedBox(width: 4),
                     GestureDetector(
-                      onTap: widget.onTap,
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => RegisterPage(onTap: () {}),
+                          ),
+                        );
+                      },
                       child: const Text(
                         'Daftar',
                         style: TextStyle(

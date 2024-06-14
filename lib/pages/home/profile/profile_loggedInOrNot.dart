@@ -2,9 +2,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_basic/pages/home/home_page.dart';
 import 'package:flutter_basic/pages/home/navbar.dart';
+import 'package:flutter_basic/pages/home/profile/profile_loggedIn.dart';
+import 'package:flutter_basic/pages/home/profile/profile_loggedOut.dart';
 
-class AuthPage extends StatelessWidget {
-  const AuthPage({super.key});
+class ProfileLoggedInOrNot extends StatelessWidget {
+  const ProfileLoggedInOrNot({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -13,9 +15,9 @@ class AuthPage extends StatelessWidget {
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            return Navbar();
+            return ProfileLoggedIn();
           } else {
-            return Navbar();
+            return MyProfile(onTap: () {});
           }
         },
       ),
