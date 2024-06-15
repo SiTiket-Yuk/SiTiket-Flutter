@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter_basic/pages/splash%20_screen.dart';
+import 'package:flutter_basic/pages/splash_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'config/firebase_options.dart';
 

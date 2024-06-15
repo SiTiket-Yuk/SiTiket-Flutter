@@ -3,6 +3,7 @@ import 'package:flutter_basic/pages/home/detail_event.dart';
 import 'package:flutter_basic/pages/home/search_page.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -12,6 +13,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final DatabaseReference _databaseReference =
       FirebaseDatabase.instance.ref('events');
+  final _firebaseStorage = FirebaseStorage.instance.ref();
   List<Map<dynamic, dynamic>> _events = [];
 
   @override
@@ -21,14 +23,53 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> _fetchEvents() async {
-    final DataSnapshot snapshot = await _databaseReference.get();
-    final Map<dynamic, dynamic> eventsMap =
-        snapshot.value as Map<dynamic, dynamic>;
+    try {
+      final DataSnapshot snapshot = await _databaseReference.get();
+      if (snapshot.exists) {
+        final Map<dynamic, dynamic> eventsMap =
+            snapshot.value as Map<dynamic, dynamic>;
 
-    setState(() {
-      _events =
-          eventsMap.values.map((e) => e as Map<dynamic, dynamic>).toList();
-    });
+        List<Future<Map<dynamic, dynamic>>> futures =
+            eventsMap.entries.map((entry) async {
+          String eventId = entry.key;
+          Map<dynamic, dynamic> event = entry.value;
+
+          // Fetch images for the event
+          String imageEvent = await _fetchImageUrl(eventId, 'jpg');
+          String organizerLogo = await _fetchImageUrl('${eventId}_org', 'png');
+
+          print(imageEvent);
+
+          return {
+            ...event,
+            'id': eventId,
+            'imageEvent': imageEvent,
+            'organizerLogo': organizerLogo,
+          };
+        }).toList();
+
+        List<Map<dynamic, dynamic>> eventsWithImages =
+            await Future.wait(futures);
+
+        setState(() {
+          _events = eventsWithImages;
+        });
+      } else {
+        print('No data available.');
+      }
+    } catch (e) {
+      print('Error fetching events: $e');
+    }
+  }
+
+  Future<String> _fetchImageUrl(String imagePath, String extension) async {
+    final imageName = '$imagePath.$extension';
+    try {
+      final imageRef = _firebaseStorage.child(imageName);
+      return await imageRef.getDownloadURL();
+    } catch (e) {
+      return "";
+    }
   }
 
   @override
@@ -189,11 +230,16 @@ class _HomePageState extends State<HomePage> {
             children: [
               ClipRRect(
                 borderRadius: BorderRadius.vertical(top: Radius.circular(15.0)),
-                child: Image.asset(
-                  'assets/images/12000e001.jpg',
+                child: Image.network(
+                  event['imageEvent'] ??
+                      'https://example.com/default-image.jpg', // default image URL
                   height: 150,
                   width: double.infinity,
                   fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) {
+                    return Image.asset(
+                        'assets/images/default-event.png'); // default image asset
+                  },
                 ),
               ),
               Padding(

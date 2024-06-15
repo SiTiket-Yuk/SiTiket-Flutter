@@ -24,7 +24,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
   void validateFields() {
     final bool nameValid = nameController.text.isNotEmpty;
-    final bool emailValid = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
+    final bool emailValid = RegExp(r'^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$')
         .hasMatch(emailController.text);
     setState(() {
       isNameValid = nameValid;

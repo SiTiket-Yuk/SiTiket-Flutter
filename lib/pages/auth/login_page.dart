@@ -24,7 +24,7 @@ class _LoginPageState extends State<LoginPage> {
   bool isPasswordValid = false;
 
   void validateFields() {
-    final bool emailValid = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
+    final bool emailValid = RegExp(r'^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$')
         .hasMatch(emailController.text);
     final bool passwordValid = passwordController.text.length >= 8;
     setState(() {

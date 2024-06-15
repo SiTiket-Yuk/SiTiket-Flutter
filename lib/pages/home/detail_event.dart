@@ -47,9 +47,11 @@ class EventDetailPage extends StatelessWidget {
                   color: const Color.fromARGB(255, 255, 255, 255),
                   height: 200,
                   width: 380,
-                  child: Image.asset(
-                    'assets/images/12000e001.jpg',
-                  ),
+                  child: Image.network(event['imageEvent'],
+                      errorBuilder: (context, error, stackTrace) {
+                    return Image.asset(
+                        'assets/images/default-event.png'); // default image asset
+                  }),
                 ),
               ),
             ),

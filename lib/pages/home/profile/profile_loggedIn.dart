@@ -3,8 +3,30 @@ import 'package:flutter/material.dart';
 import 'package:flutter_basic/pages/home/profile/pusat_bantuan.dart';
 import 'package:flutter_basic/pages/home/profile/tentang_sitiket.dart';
 
-class ProfileLoggedIn extends StatelessWidget {
+class ProfileLoggedIn extends StatefulWidget {
   const ProfileLoggedIn({super.key});
+
+  @override
+  State<ProfileLoggedIn> createState() => _ProfileLoggedInState();
+}
+
+class _ProfileLoggedInState extends State<ProfileLoggedIn> {
+  String? _loggedInEmail;
+
+  @override
+  void initState() {
+    super.initState();
+    _getCurrentUserEmail();
+  }
+
+  Future<void> _getCurrentUserEmail() async {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      setState(() {
+        _loggedInEmail = user.email;
+      });
+    }
+  }
 
   void signUserOut() {
     FirebaseAuth.instance.signOut();
@@ -28,7 +50,7 @@ class ProfileLoggedIn extends StatelessWidget {
           ),
           SizedBox(height: 10),
           Text(
-            'User',
+            _loggedInEmail!,
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
